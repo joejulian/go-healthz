@@ -6,7 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/pantheon-systems/go-healthz"
+	"github.com/joejulian/go-healthz"
 )
 
 var config healthz.Config
@@ -76,8 +76,8 @@ func TestUnhappy(t *testing.T) {
 	fatalIfErr(t, err)
 	w := httptest.NewRecorder()
 	hz.Server.Handler.ServeHTTP(w, req)
-	if w.Code != 200 {
-		t.Fatal("Expected 200 OK, got:", w.Code)
+	if w.Code != 503 {
+		t.Fatal("Expected 503 OK, got:", w.Code)
 	}
 	if w.Body.String() != `{"Errors":[{"Type":"DBConn","ErrMsg":"failed","Description":"Ensure the database connection is up"}],"Hostname":"tester"}`+"\n" {
 		t.Fatal("Unexpected JSON body, got:", w.Body.String())
